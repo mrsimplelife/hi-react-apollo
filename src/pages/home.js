@@ -11,13 +11,11 @@ const Home = () => {
         <Subtitle>I love GraphQL</Subtitle>
       </Header>
       {loading && <Loading>Loading...</Loading>}
-      {!loading && data.readMovies && (
-        <Movies>
-          {data.readMovies.map((m) => (
-            <Movie key={m.id} id={m.id} bg={m.medium_cover_image} />
-          ))}
-        </Movies>
-      )}
+      <Movies>
+        {data?.readMovies?.map((m) => (
+          <Movie key={m.id} id={m.id} bg={m.medium_cover_image} />
+        ))}
+      </Movies>
     </Container>
   );
 };

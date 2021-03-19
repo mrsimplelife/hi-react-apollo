@@ -3,17 +3,20 @@ import { useParams } from "react-router";
 import styled from "styled-components";
 const Detail = () => {
   const { id } = useParams();
-  const { data } = useQuery(READ_MOVIE, {
+  const { loading, data } = useQuery(READ_MOVIE, {
     variables: { id: +id },
   });
+  console.log(data);
   return (
     <Container>
       <Column>
-        <Title>{data && data.readMovie && data.readMovie.title}</Title>
-        <Subtitle>English · 4.5</Subtitle>
-        <Description>lorem ipsum lalalla </Description>
+        <Title>{loading ? "Loading..." : data?.readMovie?.title}</Title>
+        <Subtitle>
+          {data?.readMovie?.language} {data?.readMovie?.rating}
+        </Subtitle>
+        <Description>{data?.readMovie?.description_intro}</Description>
       </Column>
-      <Poster></Poster>
+      <Poster bg={data?.readMovie?.medium_cover_image}></Poster>
     </Container>
   );
 };
@@ -27,6 +30,10 @@ const READ_MOVIE = gql`
       language
       rating
       description_intro
+    }
+    getSuggestions(id: $id) {
+      id
+      medium_cover_image
     }
   }
 `;
@@ -43,6 +50,7 @@ const Container = styled.div`
 
 const Column = styled.div`
   margin-left: 10px;
+  width: 50%;
 `;
 
 const Title = styled.h1`
@@ -63,4 +71,7 @@ const Poster = styled.div`
   width: 25%;
   height: 60%;
   background-color: transparent;
+  background-image: url(${(props) => props.bg});
+  background-size: cover;
+  background-position: center center;
 `;
